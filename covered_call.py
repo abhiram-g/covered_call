@@ -41,13 +41,10 @@ option = {
 
 # total P&L if stocks are sold when option in loss, else stocks are retained as book loss
 def net_p_and_l(option, closing_price):
-    if closing_price < option['strike_price']:
+    if closing_price < option['strike_price'] + option['call_price']:
         return p_and_l.option_p_and_l(option, closing_price)
     else:
         return p_and_l.option_p_and_l(option, closing_price) + p_and_l.stock_p_and_l(option, closing_price)
-
-
-# Plot 3 graphs for realized, unrealized, and net P&L
 
 
 x = list(range(int(0.7*cmp), int(1.3*cmp), 1))
@@ -55,14 +52,6 @@ y = [net_p_and_l(option, closing_price) for closing_price in x]
 
 strike_price_xy = [strike_price, net_p_and_l(option, strike_price)]
 cmp_xy = [cmp, net_p_and_l(option, cmp)]
-
-# plt.xlabel('Closing price')
-# plt.ylabel('P & L')
-
-# special_x = [strike_price, cmp]
-# special_y = [net_p_and_l(option, closing_price) for closing_price in special_x]
-# plt.plot(special_x[1:], special_y[1:], '^g', label='CMP when purchased')
-# plt.plot(special_x[0:1], special_y[0:1], 'sr', label='Strike price')
-# plt.show()
-
-plot_graph.plot(x, y, strike_price_xy, cmp_xy)
+breakeven_xy = [strike_price + call_price - 1, net_p_and_l(option, strike_price + call_price - 1)]
+# Net P&L graph. T&C: If stocks are sold when option in loss, else stocks are retained as book loss
+plot_graph.plot(x, y, strike_price_xy, cmp_xy, breakeven_xy)

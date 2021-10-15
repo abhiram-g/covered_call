@@ -25,7 +25,7 @@ def hover(event):
                 fig.canvas.draw_idle()
 
 
-def plot(x_arr, y_arr, strike_price, cmp):
+def plot(x_arr, y_arr, strike_price, cmp, breakeven):
     global annot, ax, line, fig, x, y
     x = x_arr
     y = y_arr
@@ -38,6 +38,7 @@ def plot(x_arr, y_arr, strike_price, cmp):
     # line.set_label('')
     ax.plot([strike_price[0]], [strike_price[1]], 'sr', label='Strike price')
     ax.plot([cmp[0]], [cmp[1]], '^g', label='CMP when purchased')
+    ax.plot([breakeven[0]], [breakeven[1]], 'xr', label="Don't sell stock/index till here as you are in profit due to premium received")
     ax.legend()
     annot = ax.annotate("", xy=(0,0), xytext=(-20,20),textcoords="offset points",
                         bbox=dict(boxstyle="round", fc="w"),
